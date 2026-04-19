@@ -38,6 +38,7 @@ def main():
             cgpa = st.number_input("CGPA", 0.0, 10.0, 7.5)
             attendance = st.slider("Attendance (%)", 0, 100, 85)
             backlogs = st.number_input("Backlogs", 0, 10, 0)
+            certs = st.number_input("Certifications Count", 0, 20, 1)
 
         with col2:
             tech_score = st.slider("Technical Skill Score", 0, 100, 75)
@@ -63,8 +64,8 @@ def main():
             'internship_count': internships,
             'live_projects': projects,
             'work_experience_months': work_exp,
-            'certifications': 0, 
-            'attendance_percentage': attendance,
+            'certifications': certs,
+            'attendance_percentage': float(attendance),
             'backlogs': backlogs,
             'gender': gender,
             'extracurricular_activities': extra
