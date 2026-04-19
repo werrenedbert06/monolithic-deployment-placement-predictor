@@ -86,16 +86,29 @@ def main():
         st.subheader("Hasil Analisis")
 
         if prediction_clf == 1:
-            st.success(f"Status: **PLACED** (Confidence: {max(probability)*100:.2f}%)")
+            res_col1, res_col2 = st.columns(2)
             
-            # 4. Prediksi Regresi (Salary)
-            # Sekarang df_input sudah punya kolom FE, model_reg tidak akan error
-            prediction_reg = model_reg.predict(df_input)[0]
-            st.metric("Estimasi Paket Gaji", f"{prediction_reg:.2f} LPA")
+            with res_col1:
+                st.success("Status: **PLACED**")
+                st.metric("Confidence", f"{max(probability)*100:.2f}%")
+            
+            with res_col2:
+                prediction_reg = model_reg.predict(df_input)[0]
+                st.metric("Estimasi Paket Gaji", f"{prediction_reg:.2f} LPA")
+            
+            st.progress(float(max(probability))) # Bar hijau di bawahnya
             st.write("Mahasiswa diprediksi memenuhi kriteria industri.")
         else:
-            st.error(f"Status: **NOT PLACED** (Confidence: {max(probability)*100:.2f}%)")
+            st.error(f"Status: **NOT PLACED**")
+            st.metric("Confidence", f"{max(probability)*100:.2f}%")
+            st.progress(float(max(probability))) # Bar merah/orange di bawahnya
             st.warning("Estimasi gaji tidak tersedia untuk status prediksi Not Placed.")
 
+        # TARUH DI SINI: Expander buat bukti kalau lu paham data
+        with st.expander("ℹ️ Lihat Detail Logika Prediksi"):
+            st.write("Data yang diproses oleh model (Feature Engineering):")
+            st.dataframe(df_input) 
+            st.write("Raw Probability Score:", probability)
+            
 if __name__ == "__main__":
     main()
